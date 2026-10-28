@@ -1,0 +1,23 @@
+test_aliases_are_exact_not_fuzzy_or_model_invented (test_core.RecoveryBoundaryTests.test_aliases_are_exact_not_fuzzy_or_model_invented) ... ok
+test_all_immutable_patch_fields_are_blocked_even_when_values_unchanged (test_core.RecoveryBoundaryTests.test_all_immutable_patch_fields_are_blocked_even_when_values_unchanged) ... ok
+test_all_named_synthetic_scenarios_and_input_immutability (test_core.RecoveryBoundaryTests.test_all_named_synthetic_scenarios_and_input_immutability) ... ok
+test_bad_event_fields_never_become_model_repairable (test_core.RecoveryBoundaryTests.test_bad_event_fields_never_become_model_repairable) ... ok
+test_nonmutating_actions_cannot_smuggle_retry_or_patch (test_core.RecoveryBoundaryTests.test_nonmutating_actions_cannot_smuggle_retry_or_patch) ... ok
+test_provenance_tracks_trusted_alias_and_order_changes (test_core.RecoveryBoundaryTests.test_provenance_tracks_trusted_alias_and_order_changes) ... ok
+test_raw_response_hash_preserves_exact_bytes_but_records_are_canonical (test_core.RecoveryBoundaryTests.test_raw_response_hash_preserves_exact_bytes_but_records_are_canonical) ... ok
+test_result_changes_cannot_mutate_authoritative_inputs (test_core.RecoveryBoundaryTests.test_result_changes_cannot_mutate_authoritative_inputs) ... ok
+test_retry_boundaries_and_retry_budget_are_not_off_by_one (test_core.RecoveryBoundaryTests.test_retry_boundaries_and_retry_budget_are_not_off_by_one) ... ok
+test_untrusted_text_size_encoding_and_shape_fail_closed (test_core.RecoveryBoundaryTests.test_untrusted_text_size_encoding_and_shape_fail_closed) ... ok
+test_valid_utf8_bytes_and_bounded_size_are_accepted (test_core.RecoveryBoundaryTests.test_valid_utf8_bytes_and_bounded_size_are_accepted) ... ok
+test_bad_utf8_and_oversize_files_can_be_quarantined_without_losing_input (test_inbox.InboxTransportTests.test_bad_utf8_and_oversize_files_can_be_quarantined_without_losing_input) ... ok
+test_interrupted_claim_remains_for_manual_recovery (test_inbox.InboxTransportTests.test_interrupted_claim_remains_for_manual_recovery) ... ok
+test_long_multibyte_filename_can_be_claimed (test_inbox.InboxTransportTests.test_long_multibyte_filename_can_be_claimed) ... ok
+test_partial_file_is_not_claimed_and_input_is_preserved (test_inbox.InboxTransportTests.test_partial_file_is_not_claimed_and_input_is_preserved) ... ok
+test_same_filename_gets_distinct_claims (test_inbox.InboxTransportTests.test_same_filename_gets_distinct_claims) ... ok
+test_symlink_target_is_not_read_or_modified (test_inbox.InboxTransportTests.test_symlink_target_is_not_read_or_modified) ... ok
+test_token_cannot_escape_processing_directory (test_inbox.InboxTransportTests.test_token_cannot_escape_processing_directory) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.014s
+
+OK

@@ -1,0 +1,100 @@
+{
+  "kind": "new-container-from-built-source-image",
+  "checks": [
+    {
+      "name": "fresh container becomes healthy",
+      "passed": true
+    },
+    {
+      "name": "fresh database has no prior demo events",
+      "passed": true
+    },
+    {
+      "name": "production starts on first run",
+      "passed": true
+    },
+    {
+      "name": "documented sample publisher works on first run",
+      "passed": true
+    },
+    {
+      "name": "fresh polling adapter writes a receipt",
+      "passed": true
+    },
+    {
+      "name": "first input processed without manual code loading",
+      "passed": true
+    },
+    {
+      "name": "fresh container calls real AI Hub model",
+      "passed": true
+    },
+    {
+      "name": "fresh result waits for approval",
+      "passed": true
+    },
+    {
+      "name": "fresh input creates no sink row before approval",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "image_id": "sha256:66b6a396d17861c9ad1fdff4b8e2ad0f8f50e287705f7aeba6a9657a26c61d08",
+  "receipt": {
+    "token": "76c772351fa447a9b4d8f754bac0bd1d__6a4d4211ec694e1e88b9688a526548f9.json",
+    "original_name": "6a4d4211ec694e1e88b9688a526548f9.json",
+    "disposition": "processed",
+    "at": "2026-10-28T05:08:28.565899+00:00",
+    "result": {
+      "ok": true,
+      "source": "warehouse-file",
+      "event_id": "file-1",
+      "state": "awaiting_approval",
+      "mode": "live",
+      "duplicate": 0,
+      "sink": "local-demo-only",
+      "external_delivery": false,
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "normalize_sku",
+        "patch": {
+          "sku": "SKU-100"
+        },
+        "retry_after_seconds": null,
+        "reason_code": "normalization_validated",
+        "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "a45e5556c2dd56f50c617b2374a8dd111d7cc66fc9690b4d5437595dd892d5f4",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+          "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+          "event_id": "file-1",
+          "source": "warehouse-file"
+        }
+      },
+      "original_sha256": "a45e5556c2dd56f50c617b2374a8dd111d7cc66fc9690b4d5437595dd892d5f4",
+      "agent_call_completed": 1,
+      "agent_metrics": {
+        "current_context_tokens": 110,
+        "model_context_size": 200000,
+        "total_cache_creation_tokens": 0,
+        "total_cache_read_tokens": 445,
+        "total_completion_tokens": 21,
+        "total_interactions": 1,
+        "total_llm_duration_ms": 2259,
+        "total_prompt_tokens": 450,
+        "total_reasoning_tokens": 0,
+        "total_tool_calls": 0,
+        "total_tool_duration_ms": 0
+      },
+      "created_at": "2026-10-28 05:08:26",
+      "updated_at": "2026-10-28 05:08:28"
+    },
+    "external_delivery": false
+  },
+  "temporary_container_removed": true,
+  "checks_run": 9
+}

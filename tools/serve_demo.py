@@ -77,7 +77,7 @@ class Handler(BaseHTTPRequestHandler):
             if type(payload) is not dict or payload.get("action") not in {
                     "list", "detail", "create", "approve", "deny", "duplicate"}:
                 raise ValueError("Invalid action")
-            if not set(payload) <= {"action", "scenario", "mode", "id"}:
+            if not set(payload) <= {"action", "scenario", "mode", "id", "source"}:
                 raise ValueError("Unexpected request fields")
             for key, value in payload.items():
                 if type(value) is not str or len(value) > 128:

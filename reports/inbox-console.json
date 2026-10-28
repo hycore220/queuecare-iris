@@ -1,0 +1,134 @@
+{
+  "evidence_kind": "actual-browser-file-review-followed-by-HTTP-data-checks",
+  "passed": true,
+  "checks": [
+    {
+      "name": "file source appears in console list",
+      "passed": true
+    },
+    {
+      "name": "UI approval persisted",
+      "passed": true
+    },
+    {
+      "name": "one local sink row after UI resend",
+      "passed": true
+    },
+    {
+      "name": "one receive journal entry",
+      "passed": true
+    },
+    {
+      "name": "same source preserved",
+      "passed": true
+    },
+    {
+      "name": "real inference recorded",
+      "passed": true
+    },
+    {
+      "name": "unsupported source is rejected",
+      "passed": true
+    }
+  ],
+  "record": {
+    "ok": true,
+    "source": "warehouse-file",
+    "event_id": "file-1",
+    "state": "delivered_local",
+    "mode": "live",
+    "duplicate": 0,
+    "sink": "local-demo-only",
+    "external_delivery": false,
+    "decision": {
+      "schema_version": 1,
+      "approved": true,
+      "action": "normalize_sku",
+      "patch": {
+        "sku": "SKU-100"
+      },
+      "retry_after_seconds": null,
+      "reason_code": "normalization_validated",
+      "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+      "provenance": {
+        "hash_algorithm": "sha256",
+        "record_encoding": "canonical-json-sort-keys-utf8",
+        "event_sha256": "a45e5556c2dd56f50c617b2374a8dd111d7cc66fc9690b4d5437595dd892d5f4",
+        "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+        "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+        "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+        "event_id": "file-1",
+        "source": "warehouse-file"
+      }
+    },
+    "original_sha256": "a45e5556c2dd56f50c617b2374a8dd111d7cc66fc9690b4d5437595dd892d5f4",
+    "agent_call_completed": 1,
+    "agent_metrics": {
+      "current_context_tokens": 110,
+      "model_context_size": 200000,
+      "total_cache_creation_tokens": 0,
+      "total_cache_read_tokens": 0,
+      "total_completion_tokens": 21,
+      "total_interactions": 1,
+      "total_llm_duration_ms": 5255,
+      "total_prompt_tokens": 450,
+      "total_reasoning_tokens": 0,
+      "total_tool_calls": 0,
+      "total_tool_duration_ms": 0
+    },
+    "created_at": "2026-10-28 05:03:47",
+    "updated_at": "2026-10-28 05:05:00",
+    "input": {
+      "id": "file-1",
+      "source": "warehouse-file",
+      "order_id": "ORD-42",
+      "sku": "legacy-blue",
+      "quantity": 2,
+      "status": "failed",
+      "retry_count": 0
+    },
+    "order": {
+      "order_id": "ORD-42",
+      "sku": "SKU-100",
+      "quantity": 2
+    },
+    "aliases": {
+      "legacy-blue": [
+        "SKU-100"
+      ],
+      "blue": [
+        "SKU-100",
+        "SKU-200"
+      ]
+    },
+    "proposal": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\"}}",
+    "journal": [
+      {
+        "event": "received",
+        "actor": "workflow",
+        "at": "2026-10-28 05:03:47"
+      },
+      {
+        "event": "decision_recorded",
+        "actor": "workflow",
+        "at": "2026-10-28 05:03:52"
+      },
+      {
+        "event": "delivered_local",
+        "actor": "local-console-reviewer",
+        "at": "2026-10-28 05:05:00"
+      }
+    ],
+    "sink_record_count": 1,
+    "delivery": {
+      "id": "file-1",
+      "source": "warehouse-file",
+      "order_id": "ORD-42",
+      "sku": "SKU-100",
+      "quantity": 2,
+      "status": "failed",
+      "retry_count": 0
+    },
+    "retry_after_seconds": ""
+  }
+}

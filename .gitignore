@@ -1,5 +1,6 @@
 .env
 **/__pycache__/
 local-models/
+inbox/
 *.tar.gz
 *.key

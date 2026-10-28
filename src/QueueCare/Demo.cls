@@ -30,18 +30,20 @@ ClassMethod Dispatch(requestJSON As %String) As %String
             Set ^QueueCareDemoEvents(run)=id
             Return ..Detail(id)
         }
-        Set id=request.id, key=##class(QueueCare.Store).Key("web-demo",id)
+        Set source=request.%Get("source","web-demo")
+        If (source'="web-demo")&&(source'="warehouse-file") Return ##class(QueueCare.Store).Error("invalid_source")
+        Set id=request.id, key=##class(QueueCare.Store).Key(source,id)
         If '$Length(id) Return ##class(QueueCare.Store).Error("event_required")
-        If action="detail" Return ..Detail(id)
+        If action="detail" Return ..Detail(id,source)
         If action="approve" {
-            Set reply=##class(%DynamicObject).%FromJSON(##class(QueueCare.API).Approve("web-demo",id,1,"local-console-reviewer"))
+            Set reply=##class(%DynamicObject).%FromJSON(##class(QueueCare.API).Approve(source,id,1,"local-console-reviewer"))
             If 'reply.ok Return reply.%ToJSON()
-            Return ..Detail(id)
+            Return ..Detail(id,source)
         }
         If action="deny" {
-            Set reply=##class(%DynamicObject).%FromJSON(##class(QueueCare.API).Approve("web-demo",id,0,"local-console-reviewer"))
+            Set reply=##class(%DynamicObject).%FromJSON(##class(QueueCare.API).Approve(source,id,0,"local-console-reviewer"))
             If 'reply.ok Return reply.%ToJSON()
-            Return ..Detail(id)
+            Return ..Detail(id,source)
         }
         If action="duplicate" {
             Set row=##class(QueueCare.Data.Event).%OpenId(key)
@@ -50,7 +52,7 @@ ClassMethod Dispatch(requestJSON As %String) As %String
             If row.Mode="replay" Set proposalJSON=row.ProposalJSON
             Set reply=##class(%DynamicObject).%FromJSON(##class(QueueCare.API).Submit(row.EventJSON,row.Mode,proposalJSON))
             If 'reply.ok Return reply.%ToJSON()
-            Set out=##class(%DynamicObject).%FromJSON(..Detail(id)), out.duplicate=reply.duplicate
+            Set out=##class(%DynamicObject).%FromJSON(..Detail(id,source)), out.duplicate=reply.duplicate
             Return out.%ToJSON()
         }
         Return ##class(QueueCare.Store).Error("invalid_action")
@@ -61,23 +63,23 @@ ClassMethod Dispatch(requestJSON As %String) As %String
 
 ClassMethod List() As %String
 {
-    Set out={"ok":true,"events":[],"source":"web-demo","sink":"local-demo-only"}, run="", count=0
-    For {
-        Set run=$Order(^QueueCareDemoEvents(run),-1)
-        Quit:run=""
-        Set row=##class(QueueCare.Data.Event).%OpenId(##class(QueueCare.Store).Key("web-demo",^QueueCareDemoEvents(run)))
+    Set out={"ok":true,"events":[],"sink":"local-demo-only"}
+    Set statement=##class(%SQL.Statement).%New()
+    $$$ThrowOnError(statement.%Prepare("SELECT TOP 50 KeyHash FROM QueueCare_Data.Event WHERE Source IN ('web-demo','warehouse-file') ORDER BY CreatedAt DESC, KeyHash"))
+    Set result=statement.%Execute()
+    While result.%Next() {
+        Set row=##class(QueueCare.Data.Event).%OpenId(result.%Get("KeyHash"))
         If $IsObject(row) {
             Do out.events.%Push(##class(%DynamicObject).%FromJSON(##class(QueueCare.Store).Snapshot(row)))
-            Set count=count+1
         }
-        Quit:count>=50
     }
     Quit out.%ToJSON()
 }
 
-ClassMethod Detail(id As %String) As %String
+ClassMethod Detail(id As %String, source As %String = "web-demo") As %String
 {
-    Set key=##class(QueueCare.Store).Key("web-demo",id)
+    If (source'="web-demo")&&(source'="warehouse-file") Return ##class(QueueCare.Store).Error("invalid_source")
+    Set key=##class(QueueCare.Store).Key(source,id)
     Set row=##class(QueueCare.Data.Event).%OpenId(key)
     If '$IsObject(row) Return ##class(QueueCare.Store).Error("not_found")
     Set out=##class(%DynamicObject).%FromJSON(##class(QueueCare.Store).Snapshot(row))

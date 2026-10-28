@@ -1,0 +1,5 @@
+zn "QUEUECARE"
+set sc=##class(QueueCare.Setup).Start()
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+write ##class(QueueCare.Inbox).Sample(),!
+halt

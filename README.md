@@ -6,6 +6,8 @@ A warehouse sends `legacy-blue`, while the authoritative order expects
 `SKU-100`. QueueCare asks an IRIS AI Hub agent for a recovery proposal,
 validates it against trusted order and alias records, and waits for approval.
 Approving it writes the corrected event to a local demonstration sink once.
+Events can arrive through a custom polling file adapter, so the workflow can
+receive an integration failure from a warehouse export without an API client.
 Changing a quantity, inventing an alias, or replaying an event ID with different
 content cannot silently change an order.
 
@@ -18,10 +20,19 @@ orders are synthetic. No real orders, customers, or shipments are processed.
 ## What has been run
 
 - Python policy: 11 tests, including 34 hand-authored adversarial cases, passed.
+- File transport: 7 additional Python tests passed on Linux, including partial
+  writes, rejected-input preservation, interrupted claims and symlinks.
 - Real IRIS **2026.3.0AI build 154**: 16 integration assertions passed through
   `Ens.BusinessService → Ens.BusinessProcess → Ens.BusinessOperation`.
 - Actual `%AI.Agent.Chat` to local Ollama `gemma4:e4b` through that production:
   a live SKU recovery completed, passed policy, and waited for approval.
+- Custom inbound adapter: 16 checks passed against the running IRIS worker,
+  including a real AI Hub call, approval, repeated files, identity conflicts,
+  malformed JSON, duplicate keys, wrong source and oversized input.
+- Clean installation: 9 checks passed in a fresh container built from source,
+  including an empty database, first production start, file polling, real
+  inference and no sink write before approval. The local model service was
+  reused; the IRIS container and database were new.
 - Local browser console: live inference, approval, duplicate submission,
   unsafe replay, bounded schedule and denial were exercised through the UI.
   Ten follow-up HTTP/data assertions passed, including origin/token checks.
@@ -31,6 +42,10 @@ orders are synthetic. No real orders, customers, or shipments are processed.
 
 Evidence is in `reports/iris-integration.json`, `reports/iris-live.json`,
 `reports/console-smoke.json`, and `reports/local-evaluation.json`.
+The file transport run is recorded in `reports/inbox-integration.json`.
+`reports/inbox-clean-install.json` records the fresh-container check, and
+`reports/inbox-console.json` records 7 data checks after actual browser approval
+and resend of a file event.
 The IRIS report labels replay explicitly;
 the live report includes the actual AI Hub token and timing statistics.
 `approved` inside a policy decision means **policy validation passed**. Only
@@ -39,6 +54,8 @@ an event state transition after `API.Approve` records reviewer approval.
 ## Workflow
 
 1. The public application API accepts an event, not authoritative order data.
+   The custom `QueueCare.Adapter.Inbox` also claims completed JSON files and
+   sends them through `QueueCare.Service.Inbox` to the same recovery process.
 2. The IRIS production loads the order and alias configuration from its database.
 3. In `live` mode, `%AI.Agent.Chat` produces a JSON suggestion. A provider failure
    is held for review; it never silently switches to a canned response.
@@ -127,8 +144,9 @@ python tools/serve_demo.py --wsl-distro Ubuntu-24.04
 
 Open `http://127.0.0.1:8075`. The server binds only to local loopback and is a
 single-user demonstration, not an authenticated shared deployment. Stop it
-with Ctrl+C. The console reads and changes only its synthetic `web-demo`
-events; every scenario still passes through the IRIS production.
+with Ctrl+C. The console reads and changes only the `web-demo` and
+`warehouse-file` event lanes. The supplied examples are synthetic and all
+actions pass through the IRIS production.
 
 1. Select **Run live AI recovery**. Wait for the actual AI Hub response.
 2. Compare the original SKU, authoritative order and raw model proposal.
@@ -150,6 +168,70 @@ For an already running model endpoint, omit the `local-model` profile and set
 the container**, ending in `/v1/`. Do not expose an unauthenticated model
 server publicly. The supplied agent uses Ollama's placeholder key `ollama`;
 it is not configured for a paid provider.
+
+## Receive a warehouse file
+
+The custom inbound adapter polls every two seconds in a dedicated IRIS service
+worker. It accepts UTF-8 JSON events up to 16 KiB with source `warehouse-file`.
+All file events use live AI Hub inference; files cannot supply replay proposals
+or approval commands. The file does not carry trusted order or alias records.
+
+To publish a fresh synthetic file and let the actual adapter process it:
+
+```sh
+docker compose exec -T iris iris session IRIS < tools/queue-file.script
+```
+
+In the browser console, select **Refresh records**, then the printed `file-N`
+event. While inference runs the state is `analyzing`; refresh again to see the
+stored result. Compare the event and proposal, then approve or deny it. The
+**File adapter received** label distinguishes this route from the web service.
+
+![A file event reviewed in the local console](docs/queuecare-file-review.png)
+
+To simulate an independent warehouse writer, copy the included example under
+a temporary filename, then publish it with a rename inside the container:
+
+```sh
+docker compose cp fixtures/warehouse-event.json iris:/home/irisowner/queuecare/inbox/incoming/example.part
+docker compose exec -T iris mv /home/irisowner/queuecare/inbox/incoming/example.part /home/irisowner/queuecare/inbox/incoming/example.json
+```
+
+Publish the same example twice to exercise event deduplication. A second file
+with changed content under the same `(source, id)` is rejected. Use a new ID
+for a genuinely new failure. The adapter does not poll temporary `.part` files;
+producers must finish writing before renaming to `.json` on the same filesystem.
+Start the production before using the independent-writer example so its inbox
+directories exist.
+
+Under `/home/irisowner/queuecare/inbox/`, `incoming` holds published input,
+`processing` holds claimed files, `processed` holds files with a stored workflow
+result, and `rejected` holds invalid files. Every completed attempt has a JSON
+receipt in `receipts`, including the result or rejection reason. A `processed`
+receipt does **not** mean reviewer approval or external delivery. Oversized and
+invalid inputs are retained. No files are automatically deleted.
+
+An interrupted claim stays in `processing` for manual investigation; it is not
+silently replayed. After a crash or disk failure, inspect both the receipt and
+IRIS event identity before republishing the preserved input. The filesystem
+receipt and IRIS transaction are not one atomic transaction. Inbox files live
+inside the demo container and are lost if it is recreated. Copy out needed
+files before recreating it. This is a local demonstration, not a durable
+enterprise file-transfer service.
+
+Reproduce the transport and integration checks:
+
+```sh
+docker compose exec -T iris python3 -m unittest discover -s tests -p 'test_*.py' -v
+python tools/test_inbox.py
+# Windows host with Docker inside WSL:
+python tools/test_inbox.py --wsl-distro Ubuntu-24.04
+```
+
+The integration check publishes synthetic files from outside IRIS, waits for
+the polling worker, calls the real model once, approves only its test event,
+then verifies duplicate handling and rejected-input receipts. It leaves its
+records and files available for inspection.
 
 ## Inspect and approve a live example
 
@@ -204,5 +286,12 @@ assistance. No employment history or customer results are claimed.
 - [AI Hub ObjectScript SDK](https://github.com/intersystems-community/ai-hub-eap)
 - [Community development template](https://github.com/intersystems-community/ai-hub-dev-template), MIT; provider initialization and container setup informed this app.
 - [IRIS interoperability examples](https://github.com/intersystems-community/iris-ai-examples), used to verify the service/process/operation API pattern.
+- [Custom-adapter reference](https://github.com/intersystems-community/iris-interoperability-template/blob/a24831c993c773883f6741b787ae8d405354ad26/src/dc/Reddit/InboundAdapter.cls), used to verify the `OnTask`/`BusinessHost.ProcessInput` lifecycle. The bounded file transport is original QueueCare code.
+
+The [announced technology bonuses](https://community.intersystems.com/post/technology-bonuses-intersystems-programming-contest-ai-agents-interoperability-workflows)
+include Embedded Python (3), Docker (2), and a custom interoperability adapter
+(2). The source and execution reports demonstrate these implementations;
+bonus eligibility and awarded points remain the organizers' decision. No bonus
+points or prize are claimed as awarded.
 
 Only application source is licensed under the included MIT license.
