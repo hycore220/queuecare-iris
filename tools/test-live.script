@@ -1,0 +1,16 @@
+zn "QUEUECARE"
+set sc=##class(QueueCare.Setup).SeedDemo()
+set sc=##class(QueueCare.Setup).Start()
+set run=$increment(^QueueCareLiveRun)
+set event={"id":("live-alias-"_run),"source":"live-integration-test","order_id":"ORD-42","sku":"legacy-blue","quantity":2,"status":"failed","retry_count":0,"error_detail":"Unknown legacy SKU in receiving warehouse"}
+set start=$zh
+set answer=##class(QueueCare.API).Submit(event.%ToJSON(),"live")
+set result=##class(%DynamicObject).%FromJSON(answer)
+set report={"evidence_kind":"real-AI-Hub-154-to-local-Ollama-through-IRIS-Production","version":($zversion),"elapsed_seconds":($zh-start),"result":(result)}
+set report.passed=(result.%Get("agent_call_completed")=1)&&(result.%Get("state")="awaiting_approval")
+set f=##class(%Stream.FileCharacter).%New()
+set f.Filename="/home/irisowner/queuecare/reports/iris-live.json"
+do f.Write(report.%ToJSON())
+set sc=f.%Save()
+write report.%ToJSON(),!
+halt

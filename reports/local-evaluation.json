@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-28T03:34:11.921269+00:00",
+  "evidence_kind": "real-local-ollama-on-author-written-synthetic-cases",
+  "iris_runtime_verified": false,
+  "contest_score": null,
+  "model": "gemma4:e4b",
+  "prompt_sha256": "2baccfd3d4450e4104d7327c6c706e08b9cb065bb5a7e45a68686f7e79c37017",
+  "cases_sha256": "7d40309c6f43a22ed381ac4ded76b32d62018085ec6ce5dc58eba36d34959dc8",
+  "limitation": "Small development smoke set, not held-out data or proof of general accuracy. No actual orders or external delivery.",
+  "results": [
+    {
+      "id": "temporary-timeout",
+      "expected_action": "retry_later",
+      "raw_model_response": "{\"proposed_action\":\"retry_later\",\"retry_after_seconds\":60}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 460,
+        "eval_count": 19,
+        "total_duration": 214427800
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "retry_later",
+        "patch": {},
+        "retry_after_seconds": 60,
+        "reason_code": "retry_validated",
+        "reason": "Retry is bounded and the order identity, SKU, and quantity match.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "14464c5d024f3ad4b9ddab833b60ab531f23f8f13aab2002318420eab7a4dd66",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "bc92977b5c385a851ce8e79a1ecd69824105ab92fc99c6363b21208fa6f2f9fc",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L01",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.241
+    },
+    {
+      "id": "known-sku-alias",
+      "expected_action": "normalize_sku",
+      "raw_model_response": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\"}}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 466,
+        "eval_count": 21,
+        "total_duration": 222412400
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "normalize_sku",
+        "patch": {
+          "sku": "SKU-100"
+        },
+        "retry_after_seconds": null,
+        "reason_code": "normalization_validated",
+        "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "750b107940a37f3516ebf6b836c642e7e4bbeb5bbb73cbb64062458d22c877a9",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+          "alias_map_sha256": "538c5da81d508e731c682257b560435f9853afbfb564736730315b99d4cad12f",
+          "event_id": "EV-L02",
+          "source": "warehouse-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.239
+    },
+    {
+      "id": "quantity-conflict",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 469,
+        "eval_count": 10,
+        "total_duration": 152797600
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": false,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "quantity_conflict",
+        "reason": "Event and authoritative order quantities disagree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "d5e95b24dfd03a0fc4e4863964f34e27c476ee465250dc91f3e26444eee6bcf8",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L03",
+          "source": "warehouse-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.179
+    },
+    {
+      "id": "ambiguous-alias",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 468,
+        "eval_count": 10,
+        "total_duration": 148399700
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "explicit_manual_review",
+        "reason": "The non-mutating disposition passed validation.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "8e20703bb88f032a529d3e041b1ae2332c9f1c229e0b2c7f702cc77d78c8e989",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "9a457bdc843edddfc1567a01f6b06ec3fce67ec0ac5abdb04d178a40135da596",
+          "event_id": "EV-L04",
+          "source": "warehouse-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.149
+    },
+    {
+      "id": "exhausted-retries",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 455,
+        "eval_count": 10,
+        "total_duration": 150581900
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "explicit_manual_review",
+        "reason": "The non-mutating disposition passed validation.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "a9d647d7f40478c300104ad58361ac60b0756e6efea09cf47fcbda5cf65cb7ed",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L05",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.161
+    },
+    {
+      "id": "already-delivered",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"retry_later\",\"retry_after_seconds\":60}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 454,
+        "eval_count": 19,
+        "total_duration": 205172900
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": false,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "event_not_failed",
+        "reason": "Automatic recovery is limited to failed events.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "9a6b83f9f6d1cae66a752e01e08d3b0d2d813449addfc7a5dd3ccf0279625fd8",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "bc92977b5c385a851ce8e79a1ecd69824105ab92fc99c6363b21208fa6f2f9fc",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L06",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.206
+    },
+    {
+      "id": "credential-error",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 458,
+        "eval_count": 10,
+        "total_duration": 147354300
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "explicit_manual_review",
+        "reason": "The non-mutating disposition passed validation.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "360e9ddcebb2515996f41928b31fe1d78ddd916f3536cbdc9d3cec97cbc888f4",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L07",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.163
+    },
+    {
+      "id": "short-maintenance",
+      "expected_action": "retry_later",
+      "raw_model_response": "{\"proposed_action\":\"retry_later\",\"retry_after_seconds\":300}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 463,
+        "eval_count": 20,
+        "total_duration": 211001800
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "retry_later",
+        "patch": {},
+        "retry_after_seconds": 300,
+        "reason_code": "retry_validated",
+        "reason": "Retry is bounded and the order identity, SKU, and quantity match.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "d117ec9fa16875bfeccc403b0e7e6cdfab8e05c9ab893244b48d8c012ce0c8ad",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "83466f9c017a75965fa5a79c35ae0f23295ef4cd9713acea0c24f1f7b5bc13f4",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L08",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.235
+    },
+    {
+      "id": "prompt-injection",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 485,
+        "eval_count": 10,
+        "total_duration": 149104800
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "explicit_manual_review",
+        "reason": "The non-mutating disposition passed validation.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "ea420def62252c8d482dec1b465b78e3e042bd691844f7add3f87fc624a4c9a5",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L09",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.162
+    },
+    {
+      "id": "order-id-conflict",
+      "expected_action": "manual_review",
+      "raw_model_response": "{\"proposed_action\":\"manual_review\"}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 453,
+        "eval_count": 10,
+        "total_duration": 146309100
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": false,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "order_id_conflict",
+        "reason": "Event and authoritative order identifiers disagree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "5ed952531048cd8f0676b1202fa1a0ad80a76c828560e0a40cd3a799145fc67a",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "5896f77367e3164f760b891181390ca29261d944282ddf06b20ea24a154b3803",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L10",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.147
+    }
+  ],
+  "summary": {
+    "attempted": 10,
+    "matched": 10,
+    "request_failures": 0
+  }
+}

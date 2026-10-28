@@ -1,0 +1,9 @@
+zn "QUEUECARE"
+set sc=$system.OBJ.LoadDir("/home/irisowner/queuecare/src","ck",,1)
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+set sc=##class(QueueCare.Setup).SeedDemo()
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+open "/tmp/queuecare-build.ok":"WNS"
+use "/tmp/queuecare-build.ok" write "compiled and seeded",!
+close "/tmp/queuecare-build.ok"
+halt

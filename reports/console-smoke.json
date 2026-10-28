@@ -1,0 +1,380 @@
+{
+  "evidence_kind": "local-console-UI-scenarios-and-HTTP-verification",
+  "passed": true,
+  "checks": [
+    {
+      "name": "console reads real IRIS records",
+      "passed": true
+    },
+    {
+      "name": "live AI Hub result recorded",
+      "passed": true
+    },
+    {
+      "name": "approved live event has one local sink row",
+      "passed": true
+    },
+    {
+      "name": "only intended SKU is changed",
+      "passed": true
+    },
+    {
+      "name": "duplicate did not append another delivery journal record",
+      "passed": true
+    },
+    {
+      "name": "unsafe replay held without sink row",
+      "passed": true
+    },
+    {
+      "name": "bounded retry recorded without claiming dispatch",
+      "passed": true
+    },
+    {
+      "name": "denied replay has no sink row",
+      "passed": true
+    },
+    {
+      "name": "missing request token rejected",
+      "passed": true
+    },
+    {
+      "name": "foreign origin rejected",
+      "passed": true
+    }
+  ],
+  "records": {
+    "demo-4": {
+      "ok": true,
+      "source": "web-demo",
+      "event_id": "demo-4",
+      "state": "denied",
+      "mode": "replay",
+      "duplicate": 0,
+      "sink": "local-demo-only",
+      "external_delivery": false,
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "normalize_sku",
+        "patch": {
+          "sku": "SKU-100"
+        },
+        "retry_after_seconds": null,
+        "reason_code": "normalization_validated",
+        "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "5dbfa1345774eb593d79fa5018ed180f1fac4084afaa693ff43f75dc2526b08d",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+          "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+          "event_id": "demo-4",
+          "source": "web-demo"
+        }
+      },
+      "original_sha256": "5dbfa1345774eb593d79fa5018ed180f1fac4084afaa693ff43f75dc2526b08d",
+      "agent_call_completed": 0,
+      "created_at": "2026-10-28 04:20:28",
+      "updated_at": "2026-10-28 04:20:32",
+      "input": {
+        "id": "demo-4",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "legacy-blue",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "order": {
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2
+      },
+      "aliases": {
+        "legacy-blue": [
+          "SKU-100"
+        ],
+        "blue": [
+          "SKU-100",
+          "SKU-200"
+        ]
+      },
+      "proposal": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\"}}",
+      "journal": [
+        {
+          "event": "received",
+          "actor": "workflow",
+          "at": "2026-10-28 04:20:28"
+        },
+        {
+          "event": "decision_recorded",
+          "actor": "workflow",
+          "at": "2026-10-28 04:20:28"
+        },
+        {
+          "event": "denied",
+          "actor": "local-console-reviewer",
+          "at": "2026-10-28 04:20:32"
+        }
+      ],
+      "sink_record_count": 0
+    },
+    "demo-3": {
+      "ok": true,
+      "source": "web-demo",
+      "event_id": "demo-3",
+      "state": "scheduled_local",
+      "mode": "replay",
+      "duplicate": 0,
+      "sink": "local-demo-only",
+      "external_delivery": false,
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "retry_later",
+        "patch": {},
+        "retry_after_seconds": 60,
+        "reason_code": "retry_validated",
+        "reason": "Retry is bounded and the order identity, SKU, and quantity match.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "34553422b55a5be002f0096d5c761c2267c5446ce85b5e47444eb5ad0eadb784",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "bc92977b5c385a851ce8e79a1ecd69824105ab92fc99c6363b21208fa6f2f9fc",
+          "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+          "event_id": "demo-3",
+          "source": "web-demo"
+        }
+      },
+      "original_sha256": "34553422b55a5be002f0096d5c761c2267c5446ce85b5e47444eb5ad0eadb784",
+      "agent_call_completed": 0,
+      "created_at": "2026-10-28 04:20:12",
+      "updated_at": "2026-10-28 04:20:19",
+      "input": {
+        "id": "demo-3",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "order": {
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2
+      },
+      "aliases": {
+        "legacy-blue": [
+          "SKU-100"
+        ],
+        "blue": [
+          "SKU-100",
+          "SKU-200"
+        ]
+      },
+      "proposal": "{\"proposed_action\":\"retry_later\",\"retry_after_seconds\":60}",
+      "journal": [
+        {
+          "event": "received",
+          "actor": "workflow",
+          "at": "2026-10-28 04:20:12"
+        },
+        {
+          "event": "decision_recorded",
+          "actor": "workflow",
+          "at": "2026-10-28 04:20:12"
+        },
+        {
+          "event": "scheduled_local",
+          "actor": "local-console-reviewer",
+          "at": "2026-10-28 04:20:19"
+        }
+      ],
+      "sink_record_count": 1,
+      "delivery": {
+        "id": "demo-3",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "retry_after_seconds": 60
+    },
+    "demo-2": {
+      "ok": true,
+      "source": "web-demo",
+      "event_id": "demo-2",
+      "state": "held",
+      "mode": "replay",
+      "duplicate": 0,
+      "sink": "local-demo-only",
+      "external_delivery": false,
+      "decision": {
+        "schema_version": 1,
+        "approved": false,
+        "action": "manual_review",
+        "patch": {},
+        "retry_after_seconds": null,
+        "reason_code": "invalid_patch",
+        "reason": "A normalization patch must contain exactly one nonempty SKU field.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "2c67ef3f6eb036f8dcdb72ddc7851a631755e8b98b74cf06ae86385ad0d1b3d4",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "570e456bae6c14f494816b28c412d7e86103bfe3f84943650815e140c4a4ce97",
+          "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+          "event_id": "demo-2",
+          "source": "web-demo"
+        }
+      },
+      "original_sha256": "2c67ef3f6eb036f8dcdb72ddc7851a631755e8b98b74cf06ae86385ad0d1b3d4",
+      "agent_call_completed": 0,
+      "created_at": "2026-10-28 04:19:54",
+      "updated_at": "2026-10-28 04:19:54",
+      "input": {
+        "id": "demo-2",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "legacy-blue",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "order": {
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2
+      },
+      "aliases": {
+        "legacy-blue": [
+          "SKU-100"
+        ],
+        "blue": [
+          "SKU-100",
+          "SKU-200"
+        ]
+      },
+      "proposal": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\",\"quantity\":200}}",
+      "journal": [
+        {
+          "event": "received",
+          "actor": "workflow",
+          "at": "2026-10-28 04:19:54"
+        },
+        {
+          "event": "decision_recorded",
+          "actor": "workflow",
+          "at": "2026-10-28 04:19:54"
+        }
+      ],
+      "sink_record_count": 0
+    },
+    "demo-1": {
+      "ok": true,
+      "source": "web-demo",
+      "event_id": "demo-1",
+      "state": "delivered_local",
+      "mode": "live",
+      "duplicate": 0,
+      "sink": "local-demo-only",
+      "external_delivery": false,
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "normalize_sku",
+        "patch": {
+          "sku": "SKU-100"
+        },
+        "retry_after_seconds": null,
+        "reason_code": "normalization_validated",
+        "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "269d6414fbff57c79c35b2474a869daa4f8edbd8030228d08cce50eb5318bf34",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+          "alias_map_sha256": "8f4bc169beaf17f568136ef0b5c8e8648cee2e25e20c9821b8982cc17627c142",
+          "event_id": "demo-1",
+          "source": "web-demo"
+        }
+      },
+      "original_sha256": "269d6414fbff57c79c35b2474a869daa4f8edbd8030228d08cce50eb5318bf34",
+      "agent_call_completed": 1,
+      "agent_metrics": {
+        "current_context_tokens": 109,
+        "model_context_size": 200000,
+        "total_cache_creation_tokens": 0,
+        "total_cache_read_tokens": 0,
+        "total_completion_tokens": 21,
+        "total_interactions": 1,
+        "total_llm_duration_ms": 31657,
+        "total_prompt_tokens": 450,
+        "total_reasoning_tokens": 0,
+        "total_tool_calls": 0,
+        "total_tool_duration_ms": 0
+      },
+      "created_at": "2026-10-28 04:17:25",
+      "updated_at": "2026-10-28 04:18:48",
+      "input": {
+        "id": "demo-1",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "legacy-blue",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "order": {
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2
+      },
+      "aliases": {
+        "legacy-blue": [
+          "SKU-100"
+        ],
+        "blue": [
+          "SKU-100",
+          "SKU-200"
+        ]
+      },
+      "proposal": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\"}}",
+      "journal": [
+        {
+          "event": "received",
+          "actor": "workflow",
+          "at": "2026-10-28 04:17:25"
+        },
+        {
+          "event": "decision_recorded",
+          "actor": "workflow",
+          "at": "2026-10-28 04:17:57"
+        },
+        {
+          "event": "delivered_local",
+          "actor": "local-console-reviewer",
+          "at": "2026-10-28 04:18:48"
+        }
+      ],
+      "sink_record_count": 1,
+      "delivery": {
+        "id": "demo-1",
+        "source": "web-demo",
+        "order_id": "ORD-42",
+        "sku": "SKU-100",
+        "quantity": 2,
+        "status": "failed",
+        "retry_count": 0
+      },
+      "retry_after_seconds": ""
+    }
+  }
+}

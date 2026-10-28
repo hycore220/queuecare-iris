@@ -1,0 +1,3 @@
+zn "QUEUECARE"
+do ##class(QueueCare.Tests).WriteReport()
+halt

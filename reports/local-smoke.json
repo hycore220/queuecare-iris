@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-28T03:31:24.352466+00:00",
+  "evidence_kind": "real-local-ollama-on-author-written-synthetic-cases",
+  "iris_runtime_verified": false,
+  "contest_score": null,
+  "model": "gemma4:e4b",
+  "prompt_sha256": "2baccfd3d4450e4104d7327c6c706e08b9cb065bb5a7e45a68686f7e79c37017",
+  "cases_sha256": "7d40309c6f43a22ed381ac4ded76b32d62018085ec6ce5dc58eba36d34959dc8",
+  "limitation": "Small development smoke set, not held-out data or proof of general accuracy. No actual orders or external delivery.",
+  "results": [
+    {
+      "id": "temporary-timeout",
+      "expected_action": "retry_later",
+      "raw_model_response": "{\"proposed_action\":\"retry_later\",\"retry_after_seconds\":60}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 460,
+        "eval_count": 19,
+        "total_duration": 53401836100
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "retry_later",
+        "patch": {},
+        "retry_after_seconds": 60,
+        "reason_code": "retry_validated",
+        "reason": "Retry is bounded and the order identity, SKU, and quantity match.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "14464c5d024f3ad4b9ddab833b60ab531f23f8f13aab2002318420eab7a4dd66",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "bc92977b5c385a851ce8e79a1ecd69824105ab92fc99c6363b21208fa6f2f9fc",
+          "alias_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "event_id": "EV-L01",
+          "source": "carrier-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 53.422
+    },
+    {
+      "id": "known-sku-alias",
+      "expected_action": "normalize_sku",
+      "raw_model_response": "{\"proposed_action\":\"normalize_sku\",\"patch\":{\"sku\":\"SKU-100\"}}",
+      "runtime_metrics": {
+        "model": "gemma4:e4b",
+        "done": true,
+        "done_reason": "stop",
+        "prompt_eval_count": 466,
+        "eval_count": 21,
+        "total_duration": 221854200
+      },
+      "decision": {
+        "schema_version": 1,
+        "approved": true,
+        "action": "normalize_sku",
+        "patch": {
+          "sku": "SKU-100"
+        },
+        "retry_after_seconds": null,
+        "reason_code": "normalization_validated",
+        "reason": "Exactly one explicit alias matches the authoritative SKU; immutable order fields agree.",
+        "provenance": {
+          "hash_algorithm": "sha256",
+          "record_encoding": "canonical-json-sort-keys-utf8",
+          "event_sha256": "750b107940a37f3516ebf6b836c642e7e4bbeb5bbb73cbb64062458d22c877a9",
+          "order_sha256": "49665427b749f4556385d3c54df982535b3f63c4b55f12ddf16f17b34070ca54",
+          "proposal_sha256": "a8c9cade06ccf3de877a490c52420fa757dba3ba536dabb159dd67a639eeb16a",
+          "alias_map_sha256": "538c5da81d508e731c682257b560435f9853afbfb564736730315b99d4cad12f",
+          "event_id": "EV-L02",
+          "source": "warehouse-demo"
+        }
+      },
+      "matched": true,
+      "error": null,
+      "wall_seconds": 0.237
+    }
+  ],
+  "summary": {
+    "attempted": 2,
+    "matched": 2,
+    "request_failures": 0
+  }
+}

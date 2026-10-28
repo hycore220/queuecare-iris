@@ -1,0 +1,38 @@
+services:
+  iris:
+    build:
+      context: .
+      args:
+        IRIS_IMAGE: ${IRIS_IMAGE:-iris-community:2026.3.0AI.154.0}
+    environment:
+      QUEUECARE_LLM_BASE_URL: ${QUEUECARE_LLM_BASE_URL:-http://ollama:11434/v1/}
+      QUEUECARE_LLM_MODEL: ${QUEUECARE_LLM_MODEL:-gemma4:e4b}
+    volumes:
+      - ./reports:/home/irisowner/queuecare/reports
+    # No host ports are exposed. Use docker compose exec iris iris session IRIS -U QUEUECARE.
+  ollama:
+    image: ollama/ollama@sha256:20d1bbfbabe1c97ba4b16301f08a20d8484bcf77047742a3cb71c613d8e12d0b
+    profiles: [local-model]
+    environment:
+      OLLAMA_NOPRUNE: "true"
+      OLLAMA_NO_CLOUD: "true"
+      OLLAMA_CONTEXT_LENGTH: "4096"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        mkdir -p /root/.ollama/models/manifests
+        cp -a /models-import/manifests/. /root/.ollama/models/manifests/
+        test -e /root/.ollama/models/blobs || ln -s /models-import/blobs /root/.ollama/models/blobs
+        exec /bin/ollama serve
+    volumes:
+      - type: bind
+        source: ${OLLAMA_MODELS_DIR:-./local-models}
+        target: /models-import
+        read_only: true
+      - ollama-state:/root/.ollama
+    # CPU default; a GPU configuration is optional. This service has no host port.
+volumes:
+  ollama-state:

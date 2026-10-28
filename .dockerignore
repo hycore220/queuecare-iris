@@ -1,0 +1,7 @@
+.git
+.env
+**/__pycache__
+local-models
+reports
+*.tar.gz
+*.key

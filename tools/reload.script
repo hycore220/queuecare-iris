@@ -1,0 +1,4 @@
+zn "QUEUECARE"
+set sc=$system.OBJ.LoadDir("/home/irisowner/queuecare/src","ck",,1)
+do $system.Status.DisplayError(sc)
+halt

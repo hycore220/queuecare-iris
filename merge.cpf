@@ -1,0 +1,8 @@
+[config]
+globals=0,0,512,0,0,0
+routines=80
+
+[Actions]
+CreateResource:Name=%DB_QUEUECARE,Description="QueueCare demo database"
+CreateDatabase:Name=QUEUECARE,Directory=/usr/irissys/mgr/queuecare,Resource=%DB_QUEUECARE
+CreateNamespace:Name=QUEUECARE,Globals=QUEUECARE,Routines=QUEUECARE,Interop=1
